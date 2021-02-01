@@ -7,13 +7,24 @@ const SearchParams = () => {
     const [breeds, setBreeds] = useState([]);
     const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
     const [breed, BreedDropdown, setBreed] = useDropdown("Breed", "", breeds);
+    const [pets, setPets] = useState([]);
+
+    async function requestPets() {
+        const { animals } = await pet.animals({ // wait for this to finish and then give me this data
+            location,
+            breed,
+            type: animal
+        });
+
+        setPets(animals || []);
+    }
 
     useEffect(() => { //this function runs after render happens, async
         setBreeds([]);
         setBreed("");
 
-        pet.breeds(animal).then(({ breeds }) => {
-            const breedStrings = breeds.map(({ name }) => name); //destructure name
+        pet.breeds(animal).then(({ breeds: apiBreeds }) => {
+            const breedStrings = apiBreeds.map(({ name }) => name); //destructure name
             setBreeds(breedStrings);
         }, console.error); // error => console.log(error) -- the same
     }, [animal, setBreed, setBreeds]); //the list of dependencies: if smth changes useEffect works
@@ -21,7 +32,10 @@ const SearchParams = () => {
     return (
         <div className="search-params">
             <h1>{location}</h1>
-            <form>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                requestPets();
+            }}>
                 <label htmlFor="location">
                     Location
                     <input 
