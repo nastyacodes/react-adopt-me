@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import { Router, Link } from '@reach/router'
-import SearchParams from './SearchParams';
+import { Router, Link } from "@reach/router";
+import SearchParams from "./SearchParams";
 import Details from "./Details";
-import ThemeContext from './ThemeContext';
+import ThemeContext from "./ThemeContext";
 
 const App = () => {
-  const themeHook = useState('darkblue'); //or use an object to pass mulpiple configs
+  const themeHook = useState("darkblue"); //or use an object to pass mulpiple configs
 
   return (
     <React.StrictMode>
@@ -19,7 +19,6 @@ const App = () => {
             <SearchParams path="/" />
             <Details path="/details/:id" />
           </Router>
-          
         </div>
       </ThemeContext.Provider>
     </React.StrictMode>
@@ -27,4 +26,4 @@ const App = () => {
 };
 
 //this is going to stamp our App
-render(<App/>, document.getElementById("root"));
+render(<App />, document.getElementById("root"));
